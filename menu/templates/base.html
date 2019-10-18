@@ -1,0 +1,32 @@
+{% load static %}
+{% load staticfiles %}
+{% load bootstrap4 %}
+{% bootstrap_css %}
+{% bootstrap_javascript %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>PSA</title>
+    {% block header_styles %}{% endblock header_styles %}
+</head>
+<body style="padding-top: 70px">
+{% block body %}
+    <div class="header" style="padding-bottom:30px">
+        <div class="container">
+          {% block page_header %}{% endblock page_header %}
+        </div>
+    </div>
+
+    <div class="container">
+        {% bootstrap_messages %}
+        {% block content %}{% endblock %}
+    </div>
+
+{% endblock body %}
+  {% bootstrap_javascript jquery=1 %}
+  {% block footer_scripts %}{% endblock footer_scripts %}
+</body>
+
+</html>
