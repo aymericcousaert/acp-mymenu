@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+{% load bootstrap4 %}
+{% load staticfiles %}
+
+{% block page_header %}
+    <div class="text-left float-left">
+        <h1>Products</h1>
+    </div>
+{% endblock page_header %}
+
+{% block content %}
+    <table class="table table-striped table-bordered">
+        <thead>
+            <th>Nombre</th>
+        </thead>
+        <tbody>
+        {% for product in products %}
+            <tr>
+                <td>{{ product.name }}</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}
