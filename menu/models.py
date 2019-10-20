@@ -11,3 +11,12 @@ class Product(models.Model):
 
     def __str__(self):
         return self.name
+
+
+class PaymentMethod(models.Model):
+
+    description = models.CharField(max_length=200, blank=False, null=False)
+    payment_type = models.CharField(max_length=2, blank=False, null=False)
+
+    def __str__(self):
+        return self.description
