@@ -20,19 +20,27 @@ class ProductListView(generic.ListView):
         return Product.objects.all()
 
 
+class PaymentMethodListView(generic.ListView):
+    template_name = 'payment_method_list.html'
+    context_object_name = 'payments'
+
+    def get_queryset(self):
+        return PaymentMethod.objects.all()
+
+
 class PaymentMethodView(View):
 
     def get(self, request):
         form = PaymentMethodForm()
-        return render(request, 'paymentMethod.html', {'form': form})
+        return render(request, 'payment_method.html', {'form': form})
 
     def post(self, request):
         form = PaymentMethodForm(request.POST)
         if form.is_valid():
             PaymentMethod.objects.create(**form.cleaned_data)
             messages.success(request, 'Metodo de pago creado exitosamente')
-            return render(request, 'paymentMethod.html', {'form': PaymentMethodForm()})
-        return render(request, 'paymentMethod.html', {'form': form})
+            return redirect('payment_list')
+        return render(request, 'payment_method.html', {'form': form})
 
 
 class ProductView(View):
