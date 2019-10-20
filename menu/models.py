@@ -15,8 +15,18 @@ class Product(models.Model):
 
 class PaymentMethod(models.Model):
 
+    CASH = 'CA'
+    CREDIT = 'CC'
+    DEBIT = 'DB'
+
+    TYPES = [
+        (CASH, 'Efectivo'),
+        (CREDIT, 'Credito'),
+        (DEBIT, 'Debito'),
+    ]
+
     description = models.CharField(max_length=200, blank=False, null=False)
-    payment_type = models.CharField(max_length=2, blank=False, null=False)
+    payment_type = models.CharField(max_length=2, choices=TYPES, blank=False, null=False)
 
     def __str__(self):
         return self.description

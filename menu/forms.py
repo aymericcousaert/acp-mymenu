@@ -35,18 +35,9 @@ class ProductForm(forms.ModelForm):
 
 class PaymentMethodForm(forms.Form):
 
-    CASH = 'CA'
-    CREDIT = 'CC'
-    DEBIT = 'DB'
-
-    TYPES = [
-        (CASH, 'Efectivo'),
-        (CREDIT, 'Credito'),
-        (DEBIT, 'Debito'),
-    ]
-
     description = forms.CharField(label='Descripción', required=True, max_length=200,
                                   error_messages={'required': 'Este campo es requerido',
                                                   'invalid': 'Debe tener como maximo 200 caracteres'})
-    payment_type = forms.ChoiceField(label='Tipo de pago', choices=TYPES, required=True,
-                                     error_messages={'required':'Este campo es requerido'})
+
+    payment_type = forms.ChoiceField(label='Tipo de pago', required=True, choices=PaymentMethod.TYPES,
+                                     error_messages={'required': 'Este campo es requerido'})
