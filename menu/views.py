@@ -1,16 +1,15 @@
-from django.http import HttpResponse
 from django.shortcuts import render, redirect
-
-# Create your views here.
+from django.contrib import messages
 from django.views import generic, View
-from .forms import ProductForm
-from .models import Product
+
+from .forms import ProductForm, PaymentMethodForm
+from .models import Product, PaymentMethod
 
 
 class Index(View):
 
     def get(self, request, *args, **kwargs):
-        return HttpResponse('My menu!')
+        return render(request, 'index.html')
 
 
 class ProductListView(generic.ListView):
@@ -19,6 +18,21 @@ class ProductListView(generic.ListView):
 
     def get_queryset(self):
         return Product.objects.all()
+
+
+class PaymentMethodView(View):
+
+    def get(self, request):
+        form = PaymentMethodForm()
+        return render(request, 'paymentMethod.html', {'form': form})
+
+    def post(self, request):
+        form = PaymentMethodForm(request.POST)
+        if form.is_valid():
+            PaymentMethod.objects.create(**form.cleaned_data)
+            messages.success(request, 'Metodo de pago creado exitosamente')
+            return render(request, 'paymentMethod.html', {'form': PaymentMethodForm()})
+        return render(request, 'paymentMethod.html', {'form': form})
 
 
 # New product view
