@@ -14,18 +14,18 @@ class ProductForm(forms.ModelForm):
         super(forms.ModelForm, self).clean()
 
         # extract the username and text field from the data
-        name = self.data.get('name')
-        description = self.data.get('description')
-        price = self.data.get('price')
+        name = self.cleaned_data.get('name')
+        description = self.cleaned_data.get('description')
+        price = self.cleaned_data.get('price')
 
         # conditions to be met for the username length
-        if len(name) < 1:
+        if not name or len(name) < 1:
             self._errors['name'] = self.error_class([
                 'El nombre es requerido y debe ser como maximo de longitud 30'])
-        if len(description) < 1:
+        if not description or len(description) < 1:
             self._errors['description'] = self.error_class([
                 'La descripcion es requerido y debe ser como maximo de longitud 500'])
-        if len(price) < 1:
+        if not price or price == 0:
             self._errors['price'] = self.error_class([
                 'El precio es requerido'])
 

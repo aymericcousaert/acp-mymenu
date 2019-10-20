@@ -35,16 +35,18 @@ class PaymentMethodView(View):
         return render(request, 'paymentMethod.html', {'form': form})
 
 
-# New product view
-def newproduct(request):
-    if request.method == 'POST':
+class ProductView(View):
+
+    def get(self, request):
+        form = ProductForm()
+        return render(request, 'product.html', {'form': form})
+
+    def post(self, request):
         form = ProductForm(request.POST)
         if form.is_valid():
-            form.save()
-            return redirect('products')
-        else:
-            # Redirect back to the same page if the data
-            # was invalid
-            return render(request, "product.html", {'form': form})
-    form = ProductForm()
-    return render(request, 'product.html', {'form': form})
+            Product.objects.create(**form.cleaned_data)
+            messages.success(request, 'Producto creado exitosamente')
+            return render(request, 'product.html', {'form': ProductForm()})
+        # Redirect back to the same page if the data
+        # was invalid
+        return render(request, "product.html", {'form': form})
