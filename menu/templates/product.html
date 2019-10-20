@@ -11,7 +11,7 @@
 
 {% block content %}
     <div class="container-fluid">
-        <form action="" method="post" novalidate><input type='hidden'/>
+        <form action="{% url 'product' %}" method="post" novalidate><input type='hidden'/>
             {%csrf_token %}
             {% bootstrap_form form %}
             <div class="form-group">
