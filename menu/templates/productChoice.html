@@ -9,13 +9,15 @@
 {% endblock page_header %}
 
 {% block content %}
-    <div class="row">
-        <form method="POST">
-            {%csrf_token %}
-            {{form}}
-            <button type="submit" class="btn btn-success col-sm-5">
-                <span class="glyphicon glyphicon-ok"></span> Agregar
-            </button>
-        </form>
-    </div>
+    <form method="POST">
+        {%csrf_token %}
+        {{form}}
+
+        <button type="submit" class="btn btn-success col-sm-5">
+            <span class="glyphicon glyphicon-ok"></span> Agregar
+        </button>
+    </form>
+    {% if div == True %}
+    <div> El product fue agregado. </div>
+    {% endif %}
 {% endblock %}

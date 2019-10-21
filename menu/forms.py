@@ -62,24 +62,9 @@ class CategoryForm(forms.ModelForm):
 
 
 class SelectProductForm(forms.Form):
-    #name = forms.ChoiceField(choices=[(product.pk, product.name) for product in Product.objects.all()])
-    name = forms.CharField()
+    name = forms.ChoiceField(choices=[(product.name, product.name) for product in Product.objects.all()])
 
     def clean(self):
-        # extract the username and text field from the data
-        name = self.data.get('name')
-
-        found = False
-
-        for product in Product.objects.all():
-            if product.name == name:
-                found = True
-
-        if not found:
-            self._errors['name'] = self.error_class([
-                'El product no existe'])
-
-        # return any errors if found
         return self.cleaned_data
 
 

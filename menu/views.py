@@ -1,8 +1,6 @@
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
 
-from django import forms
-
 # Create your views here.
 from django.views import generic, View
 from django.views.generic import TemplateView
@@ -73,14 +71,19 @@ class SelectProduct(TemplateView):
 
     def get(self, request, category):
         form = SelectProductForm()
-        return render(request, self.template_name, {'form': form})
+        return render(request, self.template_name, {'form': form, 'div': False})
 
     def post(self, request, category):
         form = SelectProductForm(request.POST)
-        if form.is_valid():
-            name = form.cleaned_data['name']
-            categoryToAssign = Category.objects.filter(name__exact=category)[0]
-            product = Product.objects.filter(name__exact=name)[0]
-            product.category = categoryToAssign
-            product.save()
-        return render(request, self.template_name, {'form': form})
+        div = False
+        if request.method == "POST":
+            if form.is_valid():
+                name = form.cleaned_data['name']
+                for val in Product.objects.all():
+                    if val.name == name:
+                        product = val
+                categoryToAssign = Category.objects.filter(name__exact=category)[0]
+                product.category = categoryToAssign
+                product.save()
+            div = True
+        return render(request, self.template_name, {'form': form, 'div': div})
