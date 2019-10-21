@@ -1,0 +1,22 @@
+.container-columns {
+    max-height: 100px;
+    overflow: hidden;
+    padding: 1.2em 0 0;
+}
+
+.column-item-title {
+    margin: 0;
+    font-size: 1.429em;
+    text-transform: none;
+    float: left;
+}
+
+.column-item-info {
+    border-top: 1px dashed #e3e3e3;
+    display: inline-block;
+    margin-top: 8px;
+    padding-top: 11px;
+    width: 100%;
+    font-size: 0.929em;
+    line-height: 1.2em;
+}
