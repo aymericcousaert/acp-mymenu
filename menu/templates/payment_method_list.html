@@ -16,20 +16,22 @@
                 </button>
             </a>
     </div>
-    <div class="row">
-        <table class="table table-striped table-bordered">
-            <thead>
-                <th>Tipo</th>
-                <th>Descripcion</th>
-            </thead>
-            <tbody>
-            {% for payment in payments %}
-                <tr>
-                    <td>{{ payment.get_payment_type_display }}</td>
-                    <td>{{ payment.description }}</td>
-                </tr>
-            {% endfor %}
-            </tbody>
-        </table>
-    </div>
+    {% for payment in payments %}
+        {% if forloop.first %}<div class="row">{% endif %}
+        <div class="col-sm-6">
+        <div class="container-columns">
+            <h5 class="column-item-title">
+                {{ payment.get_payment_type_display }}
+            </h5>
+
+            <div class="column-item-info">
+                {{ payment.description }}
+            </div>
+        </div>
+
+        </div>
+        {% if forloop.counter|divisibleby:2 %}</div><div class="row">{% endif %}
+        {% if forloop.last %}</div>{% endif %}
+    {% endfor %}
+
 {% endblock %}
