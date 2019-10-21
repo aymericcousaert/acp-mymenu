@@ -1,6 +1,8 @@
 from django.shortcuts import render, redirect
 from django.contrib import messages
 from django.views import generic, View
+from django.views.generic.edit import DeleteView
+from django.urls import reverse_lazy
 
 from .forms import ProductForm, PaymentMethodForm
 from .models import Product, PaymentMethod
@@ -43,18 +45,24 @@ class PaymentMethodView(View):
         return render(request, 'payment_method.html', {'form': form})
 
 
-class ProductView(View):
+class CreateProductView(View):
 
     def get(self, request):
         form = ProductForm()
-        return render(request, 'product.html', {'form': form})
+        return render(request, 'product/create.html', {'form': form})
 
     def post(self, request):
         form = ProductForm(request.POST)
         if form.is_valid():
             Product.objects.create(**form.cleaned_data)
             messages.success(request, 'Producto creado exitosamente')
-            return render(request, 'product.html', {'form': ProductForm()})
+            return render(request, 'product/create.html', {'form': ProductForm()})
         # Redirect back to the same page if the data
         # was invalid
-        return render(request, "product.html", {'form': form})
+        return render(request, "product/create.html", {'form': form})
+
+
+class DeleteProductView(DeleteView):
+    model = Product
+    template_name = 'product/delete.html'
+    success_url = reverse_lazy('products')
