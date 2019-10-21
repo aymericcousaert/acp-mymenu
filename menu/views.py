@@ -1,14 +1,23 @@
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
 
+from django import forms
+
 # Create your views here.
 from django.views import generic, View
-from .forms import ProductForm
-from .models import Product
+from django.views.generic import TemplateView
+
+from .forms import ProductForm, CategoryForm, SelectProductForm
+from .models import Product, Category
+
+# import the logging library
+import logging
+
+# Get an instance of a logger
+logger = logging.getLogger(__name__)
 
 
 class Index(View):
-
     def get(self, request, *args, **kwargs):
         return HttpResponse('My menu!')
 
@@ -34,3 +43,44 @@ def newproduct(request):
             return render(request, "product.html", {'form': form})
     form = ProductForm()
     return render(request, 'product.html', {'form': form})
+
+
+class CategoryListView(generic.ListView):
+    template_name = 'categories.html'
+    context_object_name = 'categories'
+
+    def get_queryset(self):
+        return Category.objects.all()
+
+
+# New category view
+def newCategory(request):
+    if request.method == 'POST':
+        form = CategoryForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('categories')
+        else:
+            # Redirect back to the same page if the data
+            # was invalid
+            return render(request, "category.html", {'form': form})
+    form = CategoryForm()
+    return render(request, 'category.html', {'form': form})
+
+
+class SelectProduct(TemplateView):
+    template_name = 'productChoice.html'
+
+    def get(self, request, category):
+        form = SelectProductForm()
+        return render(request, self.template_name, {'form': form})
+
+    def post(self, request, category):
+        form = SelectProductForm(request.POST)
+        if form.is_valid():
+            name = form.cleaned_data['name']
+            categoryToAssign = Category.objects.filter(name__exact=category)[0]
+            product = Product.objects.filter(name__exact=name)[0]
+            product.category = categoryToAssign
+            product.save()
+        return render(request, self.template_name, {'form': form})
