@@ -11,7 +11,6 @@ from django.contrib.auth.models import User
 from .forms import ProductForm, PaymentMethodForm
 from .models import Product, PaymentMethod
 
-
 from .forms import ProductForm, CategoryForm, SelectProductForm
 from .models import Product, Category
 
@@ -67,7 +66,18 @@ class CreateProductView(View):
     def post(self, request):
         form = ProductForm(request.POST)
         if form.is_valid():
-            Product.objects.create(**form.cleaned_data)
+            name = form.cleaned_data['category']
+            categoryFound = False
+            for val in Category.objects.all():
+                if val.name == name:
+                    category = val
+                    categoryFound = True
+            if categoryFound:
+                Product.objects.create(name=form.cleaned_data['name'], description=form.cleaned_data['description'],
+                                   price=form.cleaned_data['price'], category=category)
+            else:
+                Product.objects.create(name=form.cleaned_data['name'], description=form.cleaned_data['description'],
+                                   price=form.cleaned_data['price'])
             messages.success(request, 'Producto creado exitosamente')
             return render(request, 'product/create.html', {'form': ProductForm()})
         return render(request, "product/create.html", {'form': form})
@@ -95,7 +105,6 @@ class CreateUserView(View):
             messages.success(request, 'Usuario creado exitosamente')
             return render(request, 'user/create.html', {'form': UserCreationForm()})
         return render(request, "user/create.html", {'form': form})
-
 
 
 class CategoryListView(generic.ListView):
@@ -142,4 +151,3 @@ class SelectProduct(TemplateView):
                 product.save()
             div = True
         return render(request, self.template_name, {'form': form, 'div': div})
-

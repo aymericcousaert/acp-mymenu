@@ -1,6 +1,6 @@
 from django import forms
 
-from menu.models import PaymentMethod
+from menu.models import PaymentMethod, Category, Product
 
 
 class ProductForm(forms.Form):
@@ -13,11 +13,12 @@ class ProductForm(forms.Form):
     price = forms.DecimalField(label='Precio', required=True, decimal_places=2, max_digits=6,
                                error_messages={'required': 'Este campo es requerido',
                                                'invalid': 'Debe tener como maximo 6 digitos'})
-    category = forms.ChoiceField(label='Category', required=False)
+    category = forms.ChoiceField(label='Category', required=False, choices=
+    [("-", "-")] + [(category.name, category.name) for category in Category.objects.all()])
 
 
 class PaymentMethodForm(forms.Form):
- description = forms.CharField(label='Descripción', required=True, max_length=200,
+    description = forms.CharField(label='Descripción', required=True, max_length=200,
                                   error_messages={'required': 'Este campo es requerido',
                                                   'invalid': 'Debe tener como maximo 200 caracteres'})
     payment_type = forms.ChoiceField(label='Tipo de pago', required=True, choices=PaymentMethod.TYPES,
@@ -31,7 +32,6 @@ class CategoryForm(forms.ModelForm):
 
     # this function will be used for the validation
     def clean(self):
-
         # data from the form is fetched using super function
         super(forms.ModelForm, self).clean()
 
@@ -52,7 +52,3 @@ class SelectProductForm(forms.Form):
 
     def clean(self):
         return self.cleaned_data
-
-
-
-
