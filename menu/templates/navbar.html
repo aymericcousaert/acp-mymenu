@@ -1,7 +1,7 @@
 {% load static %}
 
 <nav class="navbar navbar-expand-lg navbar-inverse ">
-  <a class="navbar-brand" href="{% url 'home' %}">My Menu</a>
+  <a class="navbar-brand" href="{% url 'index' %}">My Menu</a>
   <div id="navbarNav">
     {% if user.is_authenticated %}
     <ul class="navbar-nav">

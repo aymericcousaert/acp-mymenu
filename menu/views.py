@@ -6,6 +6,7 @@ from django.views.generic import TemplateView
 from django.views.generic.edit import DeleteView
 from django.urls import reverse_lazy
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
 
@@ -117,19 +118,20 @@ class CategoryListView(LoginRequiredMixin, generic.ListView):
 
 
 
-    # New category view
-    def newCategory(request):
-        if request.method == 'POST':
-            form = CategoryForm(request.POST)
-            if form.is_valid():
-                form.save()
-                return redirect('categories')
-            else:
-                # Redirect back to the same page if the data
-                # was invalid
-                return render(request, "category.html", {'form': form})
-        form = CategoryForm()
-        return render(request, 'category.html', {'form': form})
+# New category view
+@login_required
+def newCategory(request):
+    if request.method == 'POST':
+        form = CategoryForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('categories')
+        else:
+            # Redirect back to the same page if the data
+            # was invalid
+            return render(request, "category.html", {'form': form})
+    form = CategoryForm()
+    return render(request, 'category.html', {'form': form})
 
 
 class SelectProduct(LoginRequiredMixin, TemplateView):
