@@ -5,6 +5,8 @@ from django.views import generic, View
 from django.views.generic import TemplateView
 from django.views.generic.edit import DeleteView
 from django.urls import reverse_lazy
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
 
@@ -21,12 +23,12 @@ import logging
 logger = logging.getLogger(__name__)
 
 
-class Index(View):
+class Index(LoginRequiredMixin, View):
     def get(self, request, *args, **kwargs):
         return render(request, 'index.html')
 
 
-class ProductListView(generic.ListView):
+class ProductListView(LoginRequiredMixin, generic.ListView):
     template_name = 'products.html'
     context_object_name = 'products'
 
@@ -34,7 +36,7 @@ class ProductListView(generic.ListView):
         return Product.objects.all()
 
 
-class PaymentMethodListView(generic.ListView):
+class PaymentMethodListView(LoginRequiredMixin, generic.ListView):
     template_name = 'payment_method_list.html'
     context_object_name = 'payments'
 
@@ -42,7 +44,7 @@ class PaymentMethodListView(generic.ListView):
         return PaymentMethod.objects.all()
 
 
-class PaymentMethodView(View):
+class PaymentMethodView(LoginRequiredMixin, View):
 
     def get(self, request):
         form = PaymentMethodForm()
@@ -57,7 +59,7 @@ class PaymentMethodView(View):
         return render(request, 'payment_method.html', {'form': form})
 
 
-class CreateProductView(View):
+class CreateProductView(LoginRequiredMixin, View):
 
     def get(self, request):
         form = ProductForm()
@@ -83,13 +85,13 @@ class CreateProductView(View):
         return render(request, "product/create.html", {'form': form})
 
 
-class DeleteProductView(DeleteView):
+class DeleteProductView(LoginRequiredMixin, DeleteView):
     model = Product
     template_name = 'product/delete.html'
     success_url = reverse_lazy('products')
 
 
-class CreateUserView(View):
+class CreateUserView(LoginRequiredMixin, View):
 
     def get(self, request):
         form = UserCreationForm()
@@ -107,7 +109,7 @@ class CreateUserView(View):
         return render(request, "user/create.html", {'form': form})
 
 
-class CategoryListView(generic.ListView):
+class CategoryListView(LoginRequiredMixin, generic.ListView):
     template_name = 'categories.html'
     context_object_name = 'elements'
 
@@ -117,6 +119,7 @@ class CategoryListView(generic.ListView):
 
 
 # New category view
+@login_required
 def newCategory(request):
     if request.method == 'POST':
         form = CategoryForm(request.POST)
@@ -131,7 +134,7 @@ def newCategory(request):
     return render(request, 'category.html', {'form': form})
 
 
-class SelectProduct(TemplateView):
+class SelectProduct(LoginRequiredMixin, TemplateView):
     template_name = 'productChoice.html'
 
     def get(self, request, category):
