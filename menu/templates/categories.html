@@ -22,13 +22,22 @@
                 <th>Nombre</th>
             </thead>
             <tbody>
-            {% for category in categories %}
+            {% for category in elements.categories %}
                 <tr>
                     <td>{{ category.name }} <a href="{% url 'productChoice' category=category.name%}">
             <button type="button" class="btn btn-success mb-1">
                     <span class="glyphicon glyphicon-plus"></span>
-                </button> </a> </td>
+                </button>
+                    </a>
+                    {%for product in elements.products %}
+                        {%if product.category == category %}
+                        <br>
+                        {{ product.name }}
+                        {% endif %}
+                    {% endfor %}
+                    </td>
                 </tr>
+
             {% endfor %}
             </tbody>
         </table>

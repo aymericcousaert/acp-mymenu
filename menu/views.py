@@ -109,10 +109,11 @@ class CreateUserView(View):
 
 class CategoryListView(generic.ListView):
     template_name = 'categories.html'
-    context_object_name = 'categories'
+    context_object_name = 'elements'
 
     def get_queryset(self):
-        return Category.objects.all()
+        return {'categories': Category.objects.all(), 'products': Product.objects.all()}
+
 
 
 # New category view
