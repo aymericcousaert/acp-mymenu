@@ -5,13 +5,13 @@
 
 {% block page_header %}
     <div class="text-left float-left">
-        <h1>Nuevo Producto</h1>
+        <h1>Nuevo Usuario Admin</h1>
     </div>
 {% endblock page_header %}
 
 {% block content %}
     <div class="container-fluid">
-        <form action="" method="post" novalidate><input type='hidden'/>
+        <form action="{% url 'add_user' %}" method="post" novalidate><input type='hidden'/>
             {%csrf_token %}
             {% bootstrap_form form %}
             <div class="form-group">
@@ -19,7 +19,7 @@
                     <span class="glyphicon glyphicon-ok"></span> Enviar
                 </button>
             </div>
-            <a href="{% url 'products' %}" class="btn btn-danger offset-sm-2 col-sm-5">Cancelar</a>
+            <a href="{% url 'home' %}" class="btn btn-danger offset-sm-2 col-sm-5">Cancelar</a>
         </form>
     </div>
 {% endblock %}

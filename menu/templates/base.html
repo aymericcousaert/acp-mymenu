@@ -8,13 +8,15 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>PSA</title>
+    <title>My Menu</title>
     {% block header_styles %}{% endblock header_styles %}
     <!-- Se que esta agregado bootstrap4 y css pero si no agrego esto no se ve bien el formulario los iconos-->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="{% static 'styles.css' %}">
 </head>
-<body style="padding-top: 70px">
+<body>
 {% block body %}
+    {% include "navbar.html" %}
     <div class="header" style="padding-bottom:30px">
         <div class="container">
           {% block page_header %}{% endblock page_header %}
@@ -22,7 +24,17 @@
     </div>
 
     <div class="container">
-        {% bootstrap_messages %}
+        {% if messages %}
+          <div class="row">
+          <div class="col-sm-6 col-sm-offset-3">
+              {% for message in messages %}
+              <div class="alert alert-{{ message.tags }}" role="alert">
+                  <p>{{ message }}</p>
+              </div>
+              {% endfor %}
+            </div>
+          </div>
+        {% endif %}
         {% block content %}{% endblock %}
     </div>
 

@@ -1,9 +1,16 @@
-from django.http import HttpResponse
 from django.shortcuts import render, redirect
-
-# Create your views here.
+from django.contrib import messages
 from django.views import generic, View
+
 from django.views.generic import TemplateView
+from django.views.generic.edit import DeleteView
+from django.urls import reverse_lazy
+from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.models import User
+
+from .forms import ProductForm, PaymentMethodForm
+from .models import Product, PaymentMethod
+
 
 from .forms import ProductForm, CategoryForm, SelectProductForm
 from .models import Product, Category
@@ -17,7 +24,7 @@ logger = logging.getLogger(__name__)
 
 class Index(View):
     def get(self, request, *args, **kwargs):
-        return HttpResponse('My menu!')
+        return render(request, 'index.html')
 
 
 class ProductListView(generic.ListView):
@@ -28,19 +35,67 @@ class ProductListView(generic.ListView):
         return Product.objects.all()
 
 
-# New product view
-def newproduct(request):
-    if request.method == 'POST':
+class PaymentMethodListView(generic.ListView):
+    template_name = 'payment_method_list.html'
+    context_object_name = 'payments'
+
+    def get_queryset(self):
+        return PaymentMethod.objects.all()
+
+
+class PaymentMethodView(View):
+
+    def get(self, request):
+        form = PaymentMethodForm()
+        return render(request, 'payment_method.html', {'form': form})
+
+    def post(self, request):
+        form = PaymentMethodForm(request.POST)
+        if form.is_valid():
+            PaymentMethod.objects.create(**form.cleaned_data)
+            messages.success(request, 'Metodo de pago creado exitosamente')
+            return redirect('payment_list')
+        return render(request, 'payment_method.html', {'form': form})
+
+
+class CreateProductView(View):
+
+    def get(self, request):
+        form = ProductForm()
+        return render(request, 'product/create.html', {'form': form})
+
+    def post(self, request):
         form = ProductForm(request.POST)
         if form.is_valid():
-            form.save()
-            return redirect('products')
-        else:
-            # Redirect back to the same page if the data
-            # was invalid
-            return render(request, "product.html", {'form': form})
-    form = ProductForm()
-    return render(request, 'product.html', {'form': form})
+            Product.objects.create(**form.cleaned_data)
+            messages.success(request, 'Producto creado exitosamente')
+            return render(request, 'product/create.html', {'form': ProductForm()})
+        return render(request, "product/create.html", {'form': form})
+
+
+class DeleteProductView(DeleteView):
+    model = Product
+    template_name = 'product/delete.html'
+    success_url = reverse_lazy('products')
+
+
+class CreateUserView(View):
+
+    def get(self, request):
+        form = UserCreationForm()
+        return render(request, 'user/create.html', {'form': form})
+
+    def post(self, request):
+        form = UserCreationForm(request.POST)
+        if form.is_valid():
+            user = form.save()
+            user.is_staff = True
+            user.is_superuser = True
+            user.save()
+            messages.success(request, 'Usuario creado exitosamente')
+            return render(request, 'user/create.html', {'form': UserCreationForm()})
+        return render(request, "user/create.html", {'form': form})
+
 
 
 class CategoryListView(generic.ListView):
@@ -87,3 +142,4 @@ class SelectProduct(TemplateView):
                 product.save()
             div = True
         return render(request, self.template_name, {'form': form, 'div': div})
+

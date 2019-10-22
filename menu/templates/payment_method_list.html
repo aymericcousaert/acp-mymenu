@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+{% load bootstrap4 %}
+{% load staticfiles %}
+
+{% block page_header %}
+    <div class="text-left float-left">
+        <h1>Metodos de Pago</h1>
+    </div>
+{% endblock page_header %}
+
+{% block content %}
+    <div class="row">
+            <a href="{% url 'payment' %}">
+                <button type="button" class="btn btn-success mb-1">
+                    <span class="glyphicon glyphicon-plus"></span>
+                </button>
+            </a>
+    </div>
+    {% for payment in payments %}
+        {% if forloop.first %}<div class="row">{% endif %}
+        <div class="col-sm-6">
+        <div class="container-columns">
+            <h5 class="column-item-title">
+                {{ payment.get_payment_type_display }}
+            </h5>
+
+            <div class="column-item-info">
+                {{ payment.description }}
+            </div>
+        </div>
+
+        </div>
+        {% if forloop.counter|divisibleby:2 %}</div><div class="row">{% endif %}
+        {% if forloop.last %}</div>{% endif %}
+    {% endfor %}
+
+{% endblock %}
