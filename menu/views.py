@@ -77,11 +77,9 @@ class CreateUserView(View):
     def post(self, request):
         form = UserCreationForm(request.POST)
         if form.is_valid():
-#             User.objects.create(**form.cleaned_data)
-#             messages.success(request, 'Usuario Admin creado exitosamente')
-#             return render(request, 'user/create.html', {'form': UserCreationForm()})
             user = form.save()
             user.is_staff = True
+            user.is_superuser = True
             user.save()
             messages.success(request, 'Usuario creado exitosamente')
             return render(request, 'user/create.html', {'form': UserCreationForm()})
