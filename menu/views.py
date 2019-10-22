@@ -3,18 +3,19 @@ from django.contrib import messages
 from django.views import generic, View
 from django.views.generic.edit import DeleteView
 from django.urls import reverse_lazy
+from django.contrib.auth.mixins import LoginRequiredMixin
 
 from .forms import ProductForm, PaymentMethodForm
 from .models import Product, PaymentMethod
 
 
-class Index(View):
+class Index(LoginRequiredMixin, View):
 
     def get(self, request, *args, **kwargs):
         return render(request, 'index.html')
 
 
-class ProductListView(generic.ListView):
+class ProductListView(LoginRequiredMixin, generic.ListView):
     template_name = 'products.html'
     context_object_name = 'products'
 
@@ -22,7 +23,7 @@ class ProductListView(generic.ListView):
         return Product.objects.all()
 
 
-class PaymentMethodListView(generic.ListView):
+class PaymentMethodListView(LoginRequiredMixin, generic.ListView):
     template_name = 'payment_method_list.html'
     context_object_name = 'payments'
 
@@ -30,7 +31,7 @@ class PaymentMethodListView(generic.ListView):
         return PaymentMethod.objects.all()
 
 
-class PaymentMethodView(View):
+class PaymentMethodView(LoginRequiredMixin, View):
 
     def get(self, request):
         form = PaymentMethodForm()
@@ -45,7 +46,7 @@ class PaymentMethodView(View):
         return render(request, 'payment_method.html', {'form': form})
 
 
-class CreateProductView(View):
+class CreateProductView(LoginRequiredMixin, View):
 
     def get(self, request):
         form = ProductForm()
@@ -62,7 +63,7 @@ class CreateProductView(View):
         return render(request, "product/create.html", {'form': form})
 
 
-class DeleteProductView(DeleteView):
+class DeleteProductView(LoginRequiredMixin, DeleteView):
     model = Product
     template_name = 'product/delete.html'
     success_url = reverse_lazy('products')
