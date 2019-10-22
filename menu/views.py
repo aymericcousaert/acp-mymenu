@@ -3,6 +3,8 @@ from django.contrib import messages
 from django.views import generic, View
 from django.views.generic.edit import DeleteView
 from django.urls import reverse_lazy
+from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.models import User
 
 from .forms import ProductForm, PaymentMethodForm
 from .models import Product, PaymentMethod
@@ -57,8 +59,6 @@ class CreateProductView(View):
             Product.objects.create(**form.cleaned_data)
             messages.success(request, 'Producto creado exitosamente')
             return render(request, 'product/create.html', {'form': ProductForm()})
-        # Redirect back to the same page if the data
-        # was invalid
         return render(request, "product/create.html", {'form': form})
 
 
@@ -66,3 +66,26 @@ class DeleteProductView(DeleteView):
     model = Product
     template_name = 'product/delete.html'
     success_url = reverse_lazy('products')
+
+
+class CreateUserView(View):
+
+    def get(self, request):
+        form = UserCreationForm()
+        return render(request, 'user/create.html', {'form': form})
+
+    def post(self, request):
+        form = UserCreationForm(request.POST)
+        if form.is_valid():
+            user = form.save()
+            user.is_staff = True
+            user.is_superuser = True
+            user.save()
+            messages.success(request, 'Usuario creado exitosamente')
+            return render(request, 'user/create.html', {'form': UserCreationForm()})
+        return render(request, "user/create.html", {'form': form})
+
+
+
+
+
