@@ -4,6 +4,12 @@ from menu.models import PaymentMethod, Category, Product
 
 
 class ProductForm(forms.Form):
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields["category"] = forms.ChoiceField(label='Category', required=False, choices=
+    [("-", "-")] + [(category.name, category.name) for category in Category.objects.all()])
+
     name = forms.CharField(label='Nombre', required=True, max_length=30,
                            error_messages={'required': 'Este campo es requerido',
                                            'invalid': 'Debe tener como maximo 30 caracteres'})
@@ -13,8 +19,7 @@ class ProductForm(forms.Form):
     price = forms.DecimalField(label='Precio', required=True, decimal_places=2, max_digits=6,
                                error_messages={'required': 'Este campo es requerido',
                                                'invalid': 'Debe tener como maximo 6 digitos'})
-    category = forms.ChoiceField(label='Category', required=False, choices=
-    [("-", "-")] + [(category.name, category.name) for category in Category.objects.all()])
+
 
 
 class PaymentMethodForm(forms.Form):
@@ -48,7 +53,9 @@ class CategoryForm(forms.ModelForm):
 
 
 class SelectProductForm(forms.Form):
-    name = forms.ChoiceField(choices=[(product.name, product.name) for product in Product.objects.all()])
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields["name"] = forms.ChoiceField(choices=[(product.name, product.name) for product in Product.objects.filter(category__name__isnull=True)])
 
     def clean(self):
         return self.cleaned_data
