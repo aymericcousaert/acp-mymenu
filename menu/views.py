@@ -68,6 +68,8 @@ class CreateProductView(LoginRequiredMixin, View):
     def post(self, request):
         form = ProductForm(request.POST)
         if form.is_valid():
+            boolVegetarian = form.cleaned_data['suitForVegetarian'] == "Si"
+            boolGlutenIntolerant = form.cleaned_data['suitForGlutenIntolerant'] == "Si"
             name = form.cleaned_data['category']
             categoryFound = False
             for val in Category.objects.all():
@@ -76,10 +78,15 @@ class CreateProductView(LoginRequiredMixin, View):
                     categoryFound = True
             if categoryFound:
                 Product.objects.create(name=form.cleaned_data['name'], description=form.cleaned_data['description'],
-                                   price=form.cleaned_data['price'], category=category)
+                                       price=form.cleaned_data['price'],
+                                       suitForVegetarian=boolVegetarian,
+                                       suitForGlutenIntolerant=boolGlutenIntolerant,
+                                       category=category)
             else:
                 Product.objects.create(name=form.cleaned_data['name'], description=form.cleaned_data['description'],
-                                   price=form.cleaned_data['price'])
+                                       price=form.cleaned_data['price'],
+                                       suitForVegetarian=boolVegetarian,
+                                       suitForGlutenIntolerant=boolGlutenIntolerant,)
             messages.success(request, 'Producto creado exitosamente')
             return render(request, 'product/create.html', {'form': ProductForm()})
         return render(request, "product/create.html", {'form': form})
@@ -115,7 +122,6 @@ class CategoryListView(LoginRequiredMixin, generic.ListView):
 
     def get_queryset(self):
         return {'categories': Category.objects.all(), 'products': Product.objects.all()}
-
 
 
 # New category view

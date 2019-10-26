@@ -19,6 +19,10 @@ class ProductForm(forms.Form):
     price = forms.DecimalField(label='Precio', required=True, decimal_places=2, max_digits=6,
                                error_messages={'required': 'Este campo es requerido',
                                                'invalid': 'Debe tener como maximo 6 digitos'})
+    suitForVegetarian = forms.ChoiceField(label='Apto para vegetarianos', required=True, choices=[("Si", "Si"),
+                                                                                                  ("No", "No")])
+    suitForGlutenIntolerant = forms.ChoiceField(label='Apto para celíacos', required=True, choices=[("Si", "Si"),
+                                                                                                    ("No", "No")])
 
 
 
