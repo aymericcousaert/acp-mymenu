@@ -11,13 +11,13 @@
 
 .column-item-description {
     margin-top: 20px;
-    font-size: 1.3em;
+    font-size: 2em;
     text-transform: none;
     float: left;
 }
 
 .column-item-action {
-    margin-top: 20px;
+    margin-top: 40px;
     font-size: 1.229em;
     text-transform: none;
     float: right;

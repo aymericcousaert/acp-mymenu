@@ -1,0 +1,47 @@
+{% extends 'base.html' %}
+{% load bootstrap4 %}
+{% load staticfiles %}
+
+
+
+{% block content %}
+
+    <div class="col-sm">
+        <div class="column-item-title">
+            {{ product.name }}
+        </div>
+
+        <div class="column-item-action">
+            <a class="text-danger" href="{% url 'product-delete' product.id %}">
+                <i class="glyphicon glyphicon-trash"></i>
+            </a>
+        </div>
+
+        <div class="column-item-info">
+            {{ product.description }}
+            <br>
+            {{ product.price }}
+        </div>
+        <div class="column-item-info">
+         {% load static %}
+            {% if product.suitForVegetarian %}
+            <img src="{% static "images/vegetarian.jpg" %}"
+            alt="Apto para vegetarianos"
+            title="Apto para vegetarianos"
+            height=56px
+            width=56px
+            >
+            {% endif %}
+            {% if product.suitForGlutenIntolerant %}
+            <img src="{% static "images/gluten-free.jpg" %}"
+            alt="Apto para celíacos"
+            title="Apto para celíacos"
+            height=50px
+            width=50px
+            >
+            {% endif %}
+        </div>
+    </div>
+
+
+{% endblock %}

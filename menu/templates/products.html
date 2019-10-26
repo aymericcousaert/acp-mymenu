@@ -21,13 +21,15 @@
         <div class="col-sm">
 
             <div class="column-item-title">
+                 <a href="{% url 'productDescription' pk=product.id %}">
                 {{ product.name }}
+                 </a>
             </div>
 
 
             <div class="column-item-action">
 
-                <a class="text-danger" href="{% url 'product-delete' product.id %}">
+                <a class="text-danger" href="{% url 'product-delete' pk=product.id %}">
                     <i class="glyphicon glyphicon-trash"></i>
                 </a>
             </div>
