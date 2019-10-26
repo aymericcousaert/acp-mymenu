@@ -68,11 +68,8 @@ class CreateProductView(LoginRequiredMixin, View):
     def post(self, request):
         form = ProductForm(request.POST)
         if form.is_valid():
-            boolVegetarian, boolGlutenIntolerant = False, False
-            if form.cleaned_data['suitForVegetarian'] == "Si":
-                boolVegetarian = True
-            if form.cleaned_data['suitForGlutenIntolerant'] == "Si":
-                boolGlutenIntolerant = True
+            boolVegetarian = form.cleaned_data['suitForVegetarian'] == "Si"
+            boolGlutenIntolerant = form.cleaned_data['suitForGlutenIntolerant'] == "Si"
             name = form.cleaned_data['category']
             categoryFound = False
             for val in Category.objects.all():
