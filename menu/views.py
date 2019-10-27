@@ -45,7 +45,6 @@ class PaymentMethodListView(LoginRequiredMixin, generic.ListView):
 
 
 class PaymentMethodView(LoginRequiredMixin, View):
-
     def get(self, request):
         form = PaymentMethodForm()
         return render(request, 'payment_method.html', {'form': form})
@@ -60,7 +59,6 @@ class PaymentMethodView(LoginRequiredMixin, View):
 
 
 class CreateProductView(LoginRequiredMixin, View):
-
     def get(self, request):
         form = ProductForm()
         return render(request, 'product/create.html', {'form': form})
@@ -91,6 +89,14 @@ class CreateProductView(LoginRequiredMixin, View):
             return render(request, 'product/create.html', {'form': ProductForm()})
         return render(request, "product/create.html", {'form': form})
 
+class ProductDescription(LoginRequiredMixin, View):
+    model = Product
+    template_name = 'product/description.html'
+
+    def get(self, request, pk):
+        product = Product.objects.filter(pk=pk)
+        return render(request, self.template_name, {'product': product[0]})
+
 
 class DeleteProductView(LoginRequiredMixin, DeleteView):
     model = Product
@@ -99,7 +105,6 @@ class DeleteProductView(LoginRequiredMixin, DeleteView):
 
 
 class CreateUserView(LoginRequiredMixin, View):
-
     def get(self, request):
         form = UserCreationForm()
         return render(request, 'user/create.html', {'form': form})
