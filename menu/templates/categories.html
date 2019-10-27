@@ -10,23 +10,10 @@
 
 {% block content %}
 
-    <a href="{% url 'category' %}">
-        <button type="button" class="btn btn-success mb-1">
-            <span class="glyphicon glyphicon-plus"></span>
-        </button>
-    </a>
-    <br>
 
     {% for category in elements.categories %}
             <div class="column-item-title">
                 {{ category.name }}
-            </div>
-            <div class="column-item-action">
-                <a href="{% url 'productChoice' category=category.name%}">
-                    <button type="button" class="btn btn-success mb-1">
-                            <span class="glyphicon glyphicon-plus"></span>
-                    </button>
-                </a>
             </div>
             <div class="column-item-info">
                 {%for product in elements.products %}
