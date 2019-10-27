@@ -38,7 +38,7 @@ class PaymentMethod(models.Model):
         return self.description
 
 
-class TodaysMenuDish(models.Model):
+class DailySpecial(models.Model):
     FIRSTPLATE = 'FP'
     MAINPLATE = 'MP'
     DESSERT = 'DE'
