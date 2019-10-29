@@ -53,3 +53,7 @@ class DailySpecial(models.Model):
 
     type = models.CharField(primary_key=True, verbose_name="Tipo", max_length=2, choices=TYPES, blank=False, null=False)
     product = models.ForeignKey(Product, verbose_name='Producto', related_name='product', on_delete=models.CASCADE)
+
+
+class Promotion(models.Model):
+    description = models.CharField(max_length=400, blank=False, null=False)
