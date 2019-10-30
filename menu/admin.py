@@ -1,10 +1,16 @@
+import smtplib
+
 from django.contrib import admin
 
 # Email packages
 
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
-import smtplib
+from mymenu.settings import EMAIL_HOST_USER
+from mymenu.settings import EMAIL_HOST_PASSWORD
+from mymenu.settings import EMAIL_PORT
+from mymenu.settings import EMAIL_HOST
+from mymenu.settings import EMAIL_SUBJECT
 
 # Token packages
 
@@ -28,24 +34,18 @@ class ClientAdmin(admin.ModelAdmin):
         msg = MIMEMultipart()
 
         # Setup email parameters
-
-        # TODO: password = EMAIL_HOST_PASSWORD
-        password = 'qdlpxybhfuqmuhqo'
-
-        msg['Subject'] = "My Menu - Comentarios o sugerencias"
-
-        # TODO: msg['From'] = EMAIL_HOST_USER
-        msg['From'] = 'mymenu.fiuba.acp@gmail.com'
+        password = EMAIL_HOST_PASSWORD
+        msg['Subject'] = EMAIL_SUBJECT
+        msg['From'] = EMAIL_HOST_USER
 
         # Add the message body
         # TODO: completar esto con la URL autogenerada
         url = self.generate_url
-        message = "This is a test"
+        message = "Hi there Georgie!"
         msg.attach(MIMEText(message, 'plain'))
 
         # Create server
-        # TODO: server = smtplib.SMTP(EMAIL_HOST + ': ' + str(EMAIL_PORT))
-        server = smtplib.SMTP('smtp.gmail.com: 587')
+        server = smtplib.SMTP(EMAIL_HOST + ': ' + str(EMAIL_PORT))
 
         # Start server
         server.starttls()
