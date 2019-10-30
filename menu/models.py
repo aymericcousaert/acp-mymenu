@@ -62,3 +62,6 @@ class Promotion(models.Model):
 class Client(models.Model):
     name = models.CharField(verbose_name="Nombre", max_length=30, blank=False, null=False)
     email = models.CharField(primary_key=True, verbose_name="Mail", max_length=50, blank=False, null=False)
+
+    def __str__(self):
+        return self.email
