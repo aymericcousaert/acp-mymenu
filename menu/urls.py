@@ -9,6 +9,7 @@ urlpatterns = [
     path('product/<int:pk>/description', views.ProductDescription.as_view(), name='productDescription'),
     path('payments/', views.PaymentMethodListView.as_view(), name='payment_list'),
     path('categories/', views.CategoryListView.as_view(), name='categories'),
+    path('promotions/', views.PromotionListView.as_view(), name='promotions'),
     path('admin/password_reset/', auth_views.PasswordResetView.as_view(), name='admin_password_reset'),
     path('admin/password_reset/done/',auth_views.PasswordResetDoneView.as_view(),name='password_reset_done'),
     path('reset/<uidb64>/<token>/',auth_views.PasswordResetConfirmView.as_view(),name='password_reset_confirm'),
