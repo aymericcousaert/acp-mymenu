@@ -1,6 +1,7 @@
 import smtplib
 
 from django.contrib import admin
+from django.contrib import messages
 
 # Email packages
 
@@ -29,7 +30,7 @@ from menu.models import Client
 class ClientAdmin(admin.ModelAdmin):
     actions = ['send_email']
 
-    def send_email(self, _request, queryset):
+    def send_email(self, request, queryset):
         # Create msg object instance
         msg = MIMEMultipart()
 
@@ -60,7 +61,7 @@ class ClientAdmin(admin.ModelAdmin):
         # Shutdown server
         server.quit()
 
-        # TODO: mostrar mensaje de exito por pantalla al admin
+        messages.add_message(request, messages.INFO, 'Email sent successfully')
 
     send_email.short_description = "Send email to selected clients with suggestions URL"
 
