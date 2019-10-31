@@ -62,7 +62,7 @@ class FormSuggestionsView(generic.ListView):
     def get(self, request, token_url):
         client = Client.objects.filter(token=token_url)
 
-        if client and client[0].token == token_url:
+        if client:
             return render(request, self.template_name)
         else:
             # TODO: mostrar mensaje de error

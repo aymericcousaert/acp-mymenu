@@ -59,7 +59,7 @@ class ClientAdmin(admin.ModelAdmin):
             # Generate token and store it in database
             token = secrets.token_urlsafe(10)
             client.token = token
-            client.save(update_fields=['token'])
+            client.save()
 
             # TODO: corregir la URL para que no sea fijo el localhost y no se muestre el mail
             url = "http://localhost:8000/form_suggestions/" + token
