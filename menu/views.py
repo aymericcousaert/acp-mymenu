@@ -1,7 +1,8 @@
 from django.shortcuts import render
 from django.views import generic, View
 
-from .models import Product, Category, PaymentMethod, Client
+from .models import Product, Category, PaymentMethod, Promotion, Client
+from .models import Product, Category, PaymentMethod, Promotion
 
 # import the logging library
 import logging
@@ -46,6 +47,14 @@ class CategoryListView(generic.ListView):
 
     def get_queryset(self):
         return {'categories': Category.objects.all(), 'products': Product.objects.all()}
+
+
+class PromotionListView(generic.ListView):
+    template_name = 'promotions.html'
+    context_object_name = 'promotions'
+
+    def get_queryset(self):
+        return Promotion.objects.all()
 
 
 class FormSuggestionsView(generic.ListView):

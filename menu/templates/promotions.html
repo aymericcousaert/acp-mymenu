@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+{% load bootstrap4 %}
+{% load staticfiles %}
+
+{% block page_header %}
+    <div class="text-left float-left">
+        <h1>Promociones</h1>
+    </div>
+{% endblock page_header %}
+
+{% block content %}
+
+    {% for promotion in promotions %}
+            <div class="column-item-title">
+                {{ promotion.description }}
+            </div>
+            <div class="column-item-info">
+            </div>
+    {% endfor %}
+
+{% endblock %}
