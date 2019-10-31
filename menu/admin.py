@@ -34,16 +34,16 @@ class ClientAdmin(admin.ModelAdmin):
         # Create msg object instance
         msg = MIMEMultipart()
 
-        # Setup email parameters
+        # Email parameters
         password = EMAIL_HOST_PASSWORD
         msg['Subject'] = EMAIL_SUBJECT
         msg['From'] = EMAIL_HOST_USER
 
-        # Add the message body
-        # TODO: completar esto con la URL autogenerada
-        url = self.generate_url
-        message = "Hi there Georgie!"
-        msg.attach(MIMEText(message, 'plain'))
+        # Message constants
+        message_prefix = "Hola "
+        message_suffix = ",\nQueremos saber cómo fue tu experiencia en nuestro restaurante.\n" \
+                         "Para ello, te enviamos un link con un formulario de comentarios y/o sugerencias: "
+        message_suffix_2 = "\n¡Esperamos recibirte nuevamente!"
 
         # Create server
         server = smtplib.SMTP(EMAIL_HOST + ': ' + str(EMAIL_PORT))
@@ -56,18 +56,27 @@ class ClientAdmin(admin.ModelAdmin):
 
         # Send message
         for client in queryset:
+            # Generate token and store it in database
+            token = secrets.token_urlsafe(20)
+            client.token = token
+
+            # TODO: corregir la URL para que no sea fijo el localhost y no se muestre el mail
+            url = "localhost:8000/form_suggestions/" + client.email + "/" + token
+
+            # Add the message body
+            full_message = message_prefix + client.name + message_suffix + url + message_suffix_2
+            msg.attach(MIMEText(full_message, 'plain'))
+
+            # Send email
             server.sendmail(msg['From'], client.email, msg.as_string())
 
         # Shutdown server
         server.quit()
 
-        messages.add_message(request, messages.INFO, 'Email sent successfully')
+        # Show success message
+        messages.add_message(request, messages.SUCCESS, 'Email sent successfully')
 
     send_email.short_description = "Send email to selected clients with suggestions URL"
-
-    def generate_url(self):
-        # TODO: See https://pypi.org/project/django-expiring-token/
-        token = secrets.token_urlsafe(20)
 
 
 # Register your models here
