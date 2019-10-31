@@ -60,8 +60,9 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='Client',
             fields=[
-                ('name', models.CharField(blank=True, default=None, max_length=20, verbose_name='token')),
-                ('email', models.CharField(max_length=50, primary_key=True, serialize=False, verbose_name='Mail'))
+                ('name', models.CharField(max_length=30, verbose_name='Nombre')),
+                ('email', models.CharField(max_length=50, primary_key=True, serialize=False, verbose_name='Mail')),
+                ('token', models.CharField(blank=True, default=None, max_length=20, verbose_name='token')),
             ],
         ),
     ]
