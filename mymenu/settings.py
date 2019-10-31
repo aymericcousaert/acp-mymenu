@@ -150,4 +150,4 @@ EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 EMAIL_HOST_USER = "mymenu.fiuba.acp@gmail.com"
 EMAIL_HOST_PASSWORD = "qdlpxybhfuqmuhqo"
-
+EMAIL_SUBJECT = "My Menu - Comentarios o sugerencias"
