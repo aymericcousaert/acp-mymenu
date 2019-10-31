@@ -1,6 +1,9 @@
 from django.urls import path, include
 from django.contrib.auth import views as auth_views
-from menu import views
+from . import views
+from django.conf import settings
+from django.contrib.staticfiles.urls import static
+from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 
 urlpatterns = [
     path('', views.Index.as_view(), name='index'),
@@ -16,4 +19,6 @@ urlpatterns = [
     path('reset/done/',auth_views.PasswordResetCompleteView.as_view(),name='password_reset_complete')
 ]
 
+urlpatterns += staticfiles_urlpatterns()
+urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 

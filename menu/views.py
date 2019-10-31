@@ -56,3 +56,5 @@ class PromotionListView(generic.ListView):
         return Promotion.objects.all()
 
 
+
+
