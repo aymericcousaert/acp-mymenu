@@ -57,11 +57,12 @@ class ClientAdmin(admin.ModelAdmin):
         # Send message
         for client in queryset:
             # Generate token and store it in database
-            token = secrets.token_urlsafe(20)
+            token = secrets.token_urlsafe(10)
             client.token = token
+            client.save(update_fields=['token'])
 
             # TODO: corregir la URL para que no sea fijo el localhost y no se muestre el mail
-            url = "localhost:8000/form_suggestions/" + client.email + "/" + token
+            url = "http://localhost:8000/form_suggestions/" + token
 
             # Add the message body
             full_message = message_prefix + client.name + message_suffix + url + message_suffix_2

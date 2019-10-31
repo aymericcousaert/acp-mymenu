@@ -51,10 +51,10 @@ class CategoryListView(generic.ListView):
 class FormSuggestionsView(generic.ListView):
     template_name = 'form_suggestions.html'
 
-    def get(self, request, pk, token_url):
-        client = Client.objects.filter(pk=pk)[0]
+    def get(self, request, token_url):
+        client = Client.objects.filter(token=token_url)
 
-        if client.token == token_url:
+        if client and client[0].token == token_url:
             return render(request, self.template_name)
         else:
             # TODO: mostrar mensaje de error
