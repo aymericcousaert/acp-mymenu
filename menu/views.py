@@ -1,7 +1,9 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.views import generic, View
+from django.contrib import messages
 
-from .models import Product, Category, PaymentMethod, Promotion, Client
+from .models import Product, Category, PaymentMethod, Promotion, Client, Suggestion
+from .forms import SuggestionForm
 
 # import the logging library
 import logging
@@ -56,7 +58,7 @@ class PromotionListView(generic.ListView):
         return Promotion.objects.all()
 
 
-class FormSuggestionsView(generic.ListView):
+class FormSuggestionsView(View):
     template_name = 'form_suggestions.html'
 
     def get(self, request, token_url):
@@ -65,5 +67,19 @@ class FormSuggestionsView(generic.ListView):
         if client:
             return render(request, self.template_name)
         else:
-            # TODO: mostrar mensaje de error
             return render(request, 'index.html')
+
+    def post(self, request, token_url):
+
+        form = SuggestionForm(request.POST)
+
+        if form.is_valid():
+            # client = Client.objects.filter(token=token_url)[0]
+            # description = form.cleaned_data.get('description')
+            # suggestion = Suggestion(client, description)
+            # TODO: no anda este save
+            # suggestion.save()
+            messages.success(request, '¡Comentario enviado exitosamente!')
+            return redirect('index.html')
+
+        return render(request, self.template_name, {'form': form})
