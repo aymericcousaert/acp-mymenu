@@ -35,6 +35,33 @@ class Migration(migrations.Migration):
                 ('description', models.TextField(max_length=500, verbose_name='Descripcion')),
                 ('price', models.DecimalField(decimal_places=2, max_digits=6, verbose_name='Precio')),
                 ('category', models.ForeignKey(null=True, on_delete=django.db.models.deletion.CASCADE, to='menu.Category')),
+                ('image', models.ImageField(blank=True, null=True, upload_to='products')),
+                ('suitForVegetarian', models.BooleanField(default=False, verbose_name='Apto para Vegetarianos')),
+                ('suitForGlutenIntolerant', models.BooleanField(default=False, verbose_name='Apto para Celíacos')),
+            ],
+        ),
+        migrations.CreateModel(
+            name='DailySpecial',
+            fields=[
+                ('type', models.CharField(
+                    choices=[('FP', 'Entrada'), ('MP', 'Plato principal'), ('DE', 'Postre'), ('DK', 'Bebida')],
+                    max_length=2, primary_key=True, serialize=False, verbose_name='Tipo')),
+                ('product', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='product',
+                                              to='menu.Product', verbose_name='Producto')),
+            ],
+        ),
+        migrations.CreateModel(
+            name='Promotion',
+            fields=[
+                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+                ('description', models.CharField(max_length=400)),
+            ],
+        ),
+        migrations.CreateModel(
+            name='Client',
+            fields=[
+                ('name', models.CharField(blank=True, default=None, max_length=20, verbose_name='token')),
+                ('email', models.CharField(max_length=50, primary_key=True, serialize=False, verbose_name='Mail'))
             ],
         ),
     ]
