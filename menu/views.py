@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from django.views import generic, View
 
-from .models import Product, Category, PaymentMethod, Promotion
+from .models import Product, Category, PaymentMethod, Promotion, Client
 
 # import the logging library
 import logging
@@ -56,3 +56,14 @@ class PromotionListView(generic.ListView):
         return Promotion.objects.all()
 
 
+class FormSuggestionsView(generic.ListView):
+    template_name = 'form_suggestions.html'
+
+    def get(self, request, token_url):
+        client = Client.objects.filter(token=token_url)
+
+        if client:
+            return render(request, self.template_name)
+        else:
+            # TODO: mostrar mensaje de error
+            return render(request, 'index.html')
