@@ -2,7 +2,6 @@ from django.shortcuts import render
 from django.views import generic, View
 
 from .models import Product, Category, PaymentMethod, Promotion, Client
-from .models import Product, Category, PaymentMethod, Promotion
 
 # import the logging library
 import logging
