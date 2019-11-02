@@ -72,9 +72,5 @@ class Suggestion(models.Model):
     client = models.ForeignKey(Client, on_delete=models.CASCADE)
     description = models.CharField(verbose_name="description", max_length=500, blank=False)
 
-    def __init__(self, client, description):
-        self.client = client
-        self.description = description
-
     def __str__(self):
         return self.description

@@ -62,11 +62,14 @@ class FormSuggestionsView(View):
     template_name = 'form_suggestions.html'
 
     def get(self, request, token_url):
+        form = SuggestionForm()
         client = Client.objects.filter(token=token_url)
 
         if client:
-            return render(request, self.template_name)
+            return render(request, self.template_name, {'form': form})
         else:
+            # TODO: este mensaje me lo muestra tmb luego de enviar los comentarios
+            # messages.warning(request, 'Este link es inválido o ya fue utilizado')
             return render(request, 'index.html')
 
     def post(self, request, token_url):
@@ -74,12 +77,16 @@ class FormSuggestionsView(View):
         form = SuggestionForm(request.POST)
 
         if form.is_valid():
-            # client = Client.objects.filter(token=token_url)[0]
-            # description = form.cleaned_data.get('description')
-            # suggestion = Suggestion(client, description)
-            # TODO: no anda este save
-            # suggestion.save()
+            # Almaceno la sugerencia en la base de datos
+            client = Client.objects.filter(token=token_url)[0]
+            form.cleaned_data['client'] = client
+            Suggestion.objects.create(**form.cleaned_data)
             messages.success(request, '¡Comentario enviado exitosamente!')
+
+            # Limpio el token del cliente asi no lo puede volver a utilizar
+            client.token = ''
+            client.save()
+
             return redirect('index.html')
 
         return render(request, self.template_name, {'form': form})
