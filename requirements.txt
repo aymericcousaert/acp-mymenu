@@ -6,3 +6,4 @@ pytz==2019.3
 soupsieve==1.9.4
 sqlparse==0.3.0
 django-widget-tweaks
+pillow

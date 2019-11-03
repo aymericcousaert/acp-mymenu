@@ -9,6 +9,7 @@
     float: left;
 }
 
+
 .column-item-description {
     margin-top: 20px;
     font-size: 2em;
@@ -16,12 +17,13 @@
     float: left;
 }
 
-.column-item-action {
+.column-item-image {
     margin-top: 40px;
     font-size: 1.229em;
     text-transform: none;
     float: right;
 }
+
 
 .column-item-info {
     border-top: 1px dashed #e3e3e3;
