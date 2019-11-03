@@ -66,3 +66,11 @@ class Client(models.Model):
 
     def __str__(self):
         return self.email
+
+
+class Suggestion(models.Model):
+    client = models.ForeignKey(Client, on_delete=models.CASCADE)
+    description = models.CharField(verbose_name="description", max_length=500, blank=False)
+
+    def __str__(self):
+        return self.description
