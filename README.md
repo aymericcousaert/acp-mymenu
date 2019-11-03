@@ -30,6 +30,7 @@ pip install -r requirements.txt
 
 - Create a postgresql database with the DATABASES config in settings.py
 
+
 ### Run migrations
 ```
 python manage.py migrate
