@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from django.views import generic, View
 
-from .models import Product, Category, PaymentMethod, Promotion, Client
+from .models import Product, Category, PaymentMethod, Promotion, Client, DailySpecial
 
 # import the logging library
 import logging
@@ -17,10 +17,10 @@ class Index(View):
 
 class ProductListView(generic.ListView):
     template_name = 'products.html'
-    context_object_name = 'products'
+    context_object_name = 'menu'
 
     def get_queryset(self):
-        return Product.objects.all()
+        return {'specials': DailySpecial.objects.all(), 'products': Product.objects.all()}
 
 
 class ProductDescription(View):

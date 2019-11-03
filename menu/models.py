@@ -38,7 +38,16 @@ class PaymentMethod(models.Model):
         return self.description
 
 
+class DailySpecialManager(models.Manager):
+    def get_queryset(self):
+        specials = list(super(DailySpecialManager, self).get_queryset())
+        for special in specials:
+            special.product.price = "{0:.2f}".format(float(special.product.price) * DailySpecial.DISCOUNT)
+        return specials
+
+
 class DailySpecial(models.Model):
+    DISCOUNT = 0.85
     FIRSTPLATE = 'FP'
     MAINPLATE = 'MP'
     DESSERT = 'DE'
@@ -53,6 +62,14 @@ class DailySpecial(models.Model):
 
     type = models.CharField(primary_key=True, verbose_name="Tipo", max_length=2, choices=TYPES, blank=False, null=False)
     product = models.ForeignKey(Product, verbose_name='Producto', related_name='product', on_delete=models.CASCADE)
+
+    objects = DailySpecialManager()
+
+    def get(self):
+        specials = list(DailySpecial.objects.all())
+        for special in specials:
+            special.product.price = "{0:.2f}".format(float(special.product.price) * DailySpecial.DISCOUNT)
+        return specials
 
 
 class Promotion(models.Model):

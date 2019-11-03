@@ -4,19 +4,46 @@
 
 {% block page_header %}
     <div class="text-left float-left">
-        <h1>Productos</h1>
+        <h1>Menu</h1>
     </div>
 {% endblock page_header %}
 
 {% block content %}
-
-    {% for product in products %}
+    <div class="text-center border-bottom border-danger">
+        <h1 class="display-4">Menú del Dia <span class="badge bg-success"><span class="glyphicon glyphicon-star"></span>-15%</span></h1>
+    </div>
+    <div>
+    {% for special in menu.specials %}
         {% if forloop.first %}<div class="row">{% endif %}
         <div class="col-sm">
 
             <div class="column-item-title">
-                 <a href="{% url 'productDescription' pk=product.id %}">
+                {{ special.get_type_display }}
+            </div>
+            <div class="column-item-info">
+                {{ special.product.name }}
+                <br>
+                {{ special.product.price }}
+            </div>
+
+        </div>
+        {% if forloop.counter|divisibleby:2 %}</div><div class="row">{% endif %}
+        {% if forloop.last %}</div>{% endif %}
+    {% endfor %}
+    </div>
+
+
+    <div class="text-center border-bottom border-danger">
+        <h1 class="display-4">Menú</h1>
+    </div>
+    {% for product in menu.products %}
+        {% if forloop.first %}<div class="row">{% endif %}
+        <div class="col-sm">
+
+            <div class="column-item-title">
                 {{ product.name }}
+                <a href="{% url 'productDescription' pk=product.id %}">
+                </a>
             </div>
             <div class="column-item-info">
                 {{ product.description }}
