@@ -25,6 +25,7 @@ from menu.models import Category
 from menu.models import DailySpecial
 from menu.models import Promotion
 from menu.models import Client
+from menu.models import Suggestion
 
 
 class ClientAdmin(admin.ModelAdmin):
@@ -88,3 +89,4 @@ admin.site.register(Category)
 admin.site.register(DailySpecial)
 admin.site.register(Promotion)
 admin.site.register(Client, ClientAdmin)
+admin.site.register(Suggestion)
