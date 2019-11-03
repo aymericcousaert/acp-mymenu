@@ -68,9 +68,8 @@ class FormSuggestionsView(View):
         if client:
             return render(request, self.template_name, {'form': form})
         else:
-            # TODO: este mensaje me lo muestra tmb luego de enviar los comentarios
-            # messages.warning(request, 'Este link es inválido o ya fue utilizado')
-            return render(request, 'index.html')
+            messages.warning(request, 'Este link es inválido o ya fue utilizado')
+            return redirect('index')
 
     def post(self, request, token_url):
 
@@ -87,6 +86,6 @@ class FormSuggestionsView(View):
             client.token = ''
             client.save()
 
-            return redirect('index.html')
+            return redirect('index')
 
         return render(request, self.template_name, {'form': form})
