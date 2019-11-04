@@ -17,12 +17,16 @@ class Index(View):
         return render(request, 'index.html')
 
 
-class ProductListView(generic.ListView):
+class ProductListView(View):
     template_name = 'products.html'
-    context_object_name = 'menu'
 
-    def get_queryset(self):
-        return {'specials': DailySpecial.objects.all(), 'products': Product.objects.all()}
+    def get(self, request, pk=None):
+        categories = Category.objects.all()
+        active_pk = pk or categories[0].pk
+        products = Product.objects.filter(category_id=active_pk)
+        context = {'products': products, 'categories': categories,
+                   'active_pk': active_pk, 'specials': DailySpecial.objects.all()}
+        return render(request, self.template_name, context)
 
 
 class ProductDescription(View):
