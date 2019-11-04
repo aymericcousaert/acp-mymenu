@@ -40,9 +40,9 @@ class PaymentMethod(models.Model):
 
 class DailySpecialManager(models.Manager):
     def get_queryset(self):
-        specials = list(super(DailySpecialManager, self).get_queryset())
+        specials = super(DailySpecialManager, self).get_queryset()
         for special in specials:
-            special.product.price = "{0:.2f}".format(float(special.product.price) * DailySpecial.DISCOUNT)
+            special.product.discountPrice = "{0:.2f}".format(float(special.product.price) * DailySpecial.DISCOUNT)
         return specials
 
 
