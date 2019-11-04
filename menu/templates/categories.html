@@ -9,8 +9,6 @@
 {% endblock page_header %}
 
 {% block content %}
-
-
     {% for category in elements.categories %}
             <div class="column-item-title">
                 {{ category.name }}
@@ -18,13 +16,11 @@
             <div class="column-item-info">
                 {%for product in elements.products %}
                     {%if product.category == category %}
-                    <br/>
                     {{ product.name }}
+                <br/><br/>
                     {% endif %}
-                <br/>
                 {% endfor %}
                 <br/>
             </div>
     {% endfor %}
-
 {% endblock %}
