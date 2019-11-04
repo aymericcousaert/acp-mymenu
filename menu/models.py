@@ -72,6 +72,8 @@ class DailySpecial(models.Model):
             special.product.price = "{0:.2f}".format(float(special.product.price) * DailySpecial.DISCOUNT)
         return specials
 
+    def __str__(self):
+        return "{}: {}".format(self.get_type_display(), self.product)
 
 class Promotion(models.Model):
     description = models.CharField(max_length=400, blank=False, null=False)
