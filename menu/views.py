@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect
 from django.views import generic, View
 from django.contrib import messages
 
-from .models import Product, Category, PaymentMethod, Promotion, Client, Suggestion
+from .models import Product, Category, PaymentMethod, Promotion, Client, Suggestion, DailySpecial
 from .forms import SuggestionForm
 
 # import the logging library
@@ -19,10 +19,10 @@ class Index(View):
 
 class ProductListView(generic.ListView):
     template_name = 'products.html'
-    context_object_name = 'products'
+    context_object_name = 'menu'
 
     def get_queryset(self):
-        return Product.objects.all()
+        return {'specials': DailySpecial.objects.all(), 'products': Product.objects.all()}
 
 
 class ProductDescription(View):
