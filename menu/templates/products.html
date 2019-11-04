@@ -13,7 +13,7 @@
         <h1 class="display-4">Menú del Dia <span class="badge bg-success"><span class="glyphicon glyphicon-star"></span>-15%</span></h1>
     </div>
     <div>
-    {% for special in menu.specials %}
+    {% for special in specials %}
         {% if forloop.first %}<div class="row">{% endif %}
         <div class="col-sm">
 
@@ -38,18 +38,32 @@
     <div class="text-center border-bottom border-danger">
         <h1 class="display-4">Menú</h1>
     </div>
-    {% for product in menu.products %}
+    <div class="nav justify-content-center" style="margin: 20px;">
+        {% for category in categories %}
+            <ul class="nav nav-pills navbar-right col-sm">
+            {% if active_pk == category.pk %}
+              <li class="border-bottom border-success">
+                <a href="{% url 'products' pk=category.id %}">{{ category.name }}</a>
+              </li>
+            {% else %}
+              <li>
+                <a href="{% url 'products' pk=category.id %}">{{ category.name }}</a>
+              </li>
+            {% endif %}
+            </ul>
+        {% endfor %}
+    </div>
+    {% for product in products %}
         {% if forloop.first %}<div class="row align-items-end">{% endif %}
-            <div class="col-sm-9">
-                <div class="column-item-title">
-                    <a href="{% url 'productDescription' pk=product.id %}">
+                <div class="col-sm-9">
+                   <div class="column-item-title">
                     {{ product.name }}
-                    </a>
                 </div>
                 <div class="column-item-info">
                     {{ product.description }}
                     <br>
                     {{ product.price }}
+
                 </div>
                 <div class="column-item-info">
                     {% load static %}
@@ -81,4 +95,5 @@
         {% if forloop.counter|divisibleby:2 %}</div><div class="row">{% endif %}
         {% if forloop.last %}</div>{% endif %}
     {% endfor %}
+
 {% endblock %}
