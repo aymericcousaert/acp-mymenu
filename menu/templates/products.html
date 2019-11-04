@@ -37,41 +37,45 @@
         <h1 class="display-4">Menú</h1>
     </div>
     {% for product in menu.products %}
-        {% if forloop.first %}<div class="row">{% endif %}
-        <div class="col-sm">
-
-            <div class="column-item-title">
-                {{ product.name }}
-                <a href="{% url 'productDescription' pk=product.id %}">
-                </a>
+        {% if forloop.first %}<div class="row align-items-end">{% endif %}
+            <div class="col-sm-9">
+                <div class="column-item-title">
+                    <a href="{% url 'productDescription' pk=product.id %}">
+                    {{ product.name }}
+                    </a>
+                </div>
+                <div class="column-item-info">
+                    {{ product.description }}
+                    <br>
+                    {{ product.price }}
+                </div>
+                <div class="column-item-info">
+                    {% load static %}
+                    {% if product.suitForVegetarian %}
+                        <img src="{% static "images/vegetarian.jpg" %}"
+                        alt="Apto para vegetarianos"
+                        title="Apto para vegetarianos"
+                        height=56px
+                        width=56px
+                        >
+                    {% endif %}
+                    {% if product.suitForGlutenIntolerant %}
+                        <img src="{% static "images/gluten-free.jpg" %}"
+                        alt="Apto para celíacos"
+                        title="Apto para celíacos"
+                        height=50px
+                        width=50px
+                        >
+                    {% endif %}
+                </div>
             </div>
-            <div class="column-item-info">
-                {{ product.description }}
-                <br>
-                {{ product.price }}
-
-            </div>
-            <div class="column-item-info">
-             {% load static %}
-                {% if product.suitForVegetarian %}
-                <img src="{% static "images/vegetarian.jpg" %}"
-                alt="Apto para vegetarianos"
-                title="Apto para vegetarianos"
-                height=56px
-                width=56px
-                >
+            <div class="col-sm-3">
+                {% if product.image %}
+                    <img src="{{product.image.url}}"
+                    height=150px
+                    width=150px>
                 {% endif %}
-                {% if product.suitForGlutenIntolerant %}
-                <img src="{% static "images/gluten-free.jpg" %}"
-                alt="Apto para celíacos"
-                title="Apto para celíacos"
-                height=50px
-                width=50px
-                >
-                {% endif %}
             </div>
-
-        </div>
         {% if forloop.counter|divisibleby:2 %}</div><div class="row">{% endif %}
         {% if forloop.last %}</div>{% endif %}
     {% endfor %}

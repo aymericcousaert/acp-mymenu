@@ -1,7 +1,9 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.views import generic, View
+from django.contrib import messages
 
-from .models import Product, Category, PaymentMethod, Promotion, Client, DailySpecial
+from .models import Product, Category, PaymentMethod, Promotion, Client, Suggestion, DailySpecial
+from .forms import SuggestionForm
 
 # import the logging library
 import logging
@@ -56,14 +58,34 @@ class PromotionListView(generic.ListView):
         return Promotion.objects.all()
 
 
-class FormSuggestionsView(generic.ListView):
+class FormSuggestionsView(View):
     template_name = 'form_suggestions.html'
 
     def get(self, request, token_url):
+        form = SuggestionForm()
         client = Client.objects.filter(token=token_url)
 
         if client:
-            return render(request, self.template_name)
+            return render(request, self.template_name, {'form': form})
         else:
-            # TODO: mostrar mensaje de error
-            return render(request, 'index.html')
+            messages.warning(request, 'Este link es inválido o ya fue utilizado')
+            return redirect('index')
+
+    def post(self, request, token_url):
+
+        form = SuggestionForm(request.POST)
+
+        if form.is_valid():
+            # Almaceno la sugerencia en la base de datos
+            client = Client.objects.filter(token=token_url)[0]
+            form.cleaned_data['client'] = client
+            Suggestion.objects.create(**form.cleaned_data)
+            messages.success(request, '¡Comentario enviado exitosamente!')
+
+            # Limpio el token del cliente asi no lo puede volver a utilizar
+            client.token = ''
+            client.save()
+
+            return redirect('index')
+
+        return render(request, self.template_name, {'form': form})

@@ -1,6 +1,9 @@
 from django.urls import path, include
 from django.contrib.auth import views as auth_views
-from menu import views
+from . import views
+from django.conf import settings
+from django.contrib.staticfiles.urls import static
+from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 
 urlpatterns = [
     path('', views.Index.as_view(), name='index'),
@@ -17,4 +20,6 @@ urlpatterns = [
     path('form_suggestions/<token_url>', views.FormSuggestionsView.as_view(), name='formSuggestions')
 ]
 
+urlpatterns += staticfiles_urlpatterns()
+urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
