@@ -2,15 +2,9 @@
 {% load bootstrap4 %}
 {% load staticfiles %}
 
-{% block page_header %}
-    <div class="text-left float-left">
-        <h1>Menu</h1>
-    </div>
-{% endblock page_header %}
-
 {% block content %}
     <div class="text-center border-bottom border-danger">
-        <h1 class="display-4">Menú del Dia <span class="badge bg-success"><span class="glyphicon glyphicon-star"></span>-15%</span></h1>
+        <h1 class="display-4">Menú del Día <span class="badge bg-success"><span class="glyphicon glyphicon-star"></span> -15%</span></h1>
     </div>
     <div>
     {% for special in specials %}
