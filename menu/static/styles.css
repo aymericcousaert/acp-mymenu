@@ -1,6 +1,10 @@
 .container-columns {
 
 }
+.navbar-inverse .navbar-nav>li>a {
+    margin-right: 15px;
+    font-size: 15px;
+}
 
 .column-item-title {
     margin-top: 20px;

@@ -14,7 +14,7 @@ logger = logging.getLogger(__name__)
 
 class Index(View):
     def get(self, request, *args, **kwargs):
-        return render(request, 'index.html')
+        return redirect('products')
 
 
 class ProductListView(View):
