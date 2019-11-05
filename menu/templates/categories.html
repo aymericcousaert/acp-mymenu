@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+{% load bootstrap4 %}
+{% load staticfiles %}
+
+{% block page_header %}
+    <div class="text-left float-left">
+        <h1>Categorías</h1>
+    </div>
+{% endblock page_header %}
+
+{% block content %}
+    {% for category in elements.categories %}
+            <div class="column-item-title">
+                {{ category.name }}
+            </div>
+            <div class="column-item-info">
+                {%for product in elements.products %}
+                    {%if product.category == category %}
+                    {{ product.name }}
+                <br/><br/>
+                    {% endif %}
+                {% endfor %}
+                <br/>
+            </div>
+    {% endfor %}
+{% endblock %}

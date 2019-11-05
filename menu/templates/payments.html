@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+{% load bootstrap4 %}
+{% load staticfiles %}
+
+{% block page_header %}
+    <div class="text-left float-left">
+        <h1>Medios de Pago</h1>
+    </div>
+{% endblock page_header %}
+
+{% block content %}
+
+    {% for payment in payments %}
+        {% if forloop.first %}<div class="row">{% endif %}
+        <div class="col-sm-6">
+        <div class="container-columns">
+            <div class="column-item-title">
+                {{ payment.get_payment_type_display }}
+            </div>
+            <div class="column-item-info">
+                {{ payment.description }}
+            </div>
+        </div>
+            <br>
+        </div>
+        {% if forloop.counter|divisibleby:2 %}</div><div class="row">{% endif %}
+        {% if forloop.last %}</div>{% endif %}
+    {% endfor %}
+
+{% endblock %}

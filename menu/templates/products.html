@@ -1,0 +1,97 @@
+{% extends 'base.html' %}
+{% load bootstrap4 %}
+{% load staticfiles %}
+
+{% block content %}
+    <div class="text-center border-bottom border-danger">
+        <h1 class="display-4">Menú del Día <span class="badge bg-success"><span class="glyphicon glyphicon-star"></span> -15%</span></h1>
+    </div>
+    <div>
+    {% for special in specials %}
+        {% if forloop.first %}<div class="row">{% endif %}
+        <div class="col-sm">
+
+            <div class="column-item-title">
+                {{ special.get_type_display }}
+            </div>
+            <div class="column-item-info">
+                {{ special.product.name }}
+                <br>
+                {% if special.discount == 0.0 %}
+                    ${{ special.product.discountPrice }}
+                {% else %}
+                    <s><span class="text-danger">${{ special.product.price }}</span></s> ${{ special.product.discountPrice }}
+                {% endif %}
+            </div>
+
+        </div>
+        {% if forloop.counter|divisibleby:2 %}</div><div class="row">{% endif %}
+        {% if forloop.last %}</div>{% endif %}
+    {% endfor %}
+    </div>
+
+
+    <br>
+    <br>
+    <div class="text-center border-bottom border-danger">
+        <h1 class="display-4">Menú</h1>
+    </div>
+    <div class="nav justify-content-center" style="margin: 20px;">
+        {% for category in categories %}
+            <ul class="nav nav-pills navbar-right col-sm">
+            {% if active_pk == category.pk %}
+              <li class="border-bottom border-success">
+                <a href="{% url 'products' pk=category.id %}">{{ category.name }}</a>
+              </li>
+            {% else %}
+              <li>
+                <a href="{% url 'products' pk=category.id %}">{{ category.name }}</a>
+              </li>
+            {% endif %}
+            </ul>
+        {% endfor %}
+    </div>
+    {% for product in products %}
+        {% if forloop.first %}<div class="row align-items-end">{% endif %}
+                <div class="col-sm-9">
+                   <div class="column-item-title">
+                    {{ product.name }}
+                </div>
+                <div class="column-item-info">
+                    {{ product.description }}
+                    <br>
+                    ${{ product.price }}
+
+                </div>
+                <div class="column-item-info">
+                    {% load static %}
+                    {% if product.suitForVegetarian %}
+                        <img src="{% static "images/vegetarian.jpg" %}"
+                        alt="Apto para vegetarianos"
+                        title="Apto para vegetarianos"
+                        height=56px
+                        width=56px
+                        >
+                    {% endif %}
+                    {% if product.suitForGlutenIntolerant %}
+                        <img src="{% static "images/gluten-free.jpg" %}"
+                        alt="Apto para celíacos"
+                        title="Apto para celíacos"
+                        height=50px
+                        width=50px
+                        >
+                    {% endif %}
+                </div>
+            </div>
+            <div class="col-sm-3">
+                {% if product.image %}
+                    <img src="{{product.image.url}}"
+                    height=150px
+                    width=150px>
+                {% endif %}
+            </div>
+        {% if forloop.counter|divisibleby:2 %}</div><div class="row">{% endif %}
+        {% if forloop.last %}</div>{% endif %}
+    {% endfor %}
+
+{% endblock %}

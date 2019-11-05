@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+{% load bootstrap4 %}
+{% load staticfiles %}
+{% load widget_tweaks %}
+
+{% block page_header %}
+    <div class="text-left float-left">
+        <h1>Comentarios y/o sugerencias</h1>
+        <br/><h3>Nos sería de gran ayuda que dejes un comentario y/o sugerencia
+        para poder mejorar la calidad de nuestros servicios.</h3>
+        <h3>¡Esperamos verte pronto!</h3>
+    </div>
+{% endblock page_header %}
+
+{% block content %}
+    <div class="container-fluid">
+        <form action="" method="post" novalidate><input type='hidden'/>
+            {% csrf_token %}
+            {% bootstrap_form form %}
+            <div class="form-group">
+                <button type="submit" class="btn btn-success col-sm-5">
+                    <span class="glyphicon glyphicon-ok"></span> Enviar
+                </button>
+            </div>
+        </form>
+    </div>
+{% endblock %}
