@@ -21,11 +21,16 @@ class ProductListView(View):
     template_name = 'products.html'
 
     def get(self, request, pk=None):
+        active_pk = pk
         categories = Category.objects.all()
-        active_pk = pk or categories[0].pk
+
+        if categories:
+            active_pk = pk or categories[0].pk
+
         products = Product.objects.filter(category_id=active_pk)
         context = {'products': products, 'categories': categories,
                    'active_pk': active_pk, 'specials': DailySpecial.objects.all()}
+
         return render(request, self.template_name, context)
 
 

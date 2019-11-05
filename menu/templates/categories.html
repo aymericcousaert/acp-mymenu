@@ -4,13 +4,11 @@
 
 {% block page_header %}
     <div class="text-left float-left">
-        <h1>Categories</h1>
+        <h1>Categorías</h1>
     </div>
 {% endblock page_header %}
 
 {% block content %}
-
-
     {% for category in elements.categories %}
             <div class="column-item-title">
                 {{ category.name }}
@@ -18,11 +16,11 @@
             <div class="column-item-info">
                 {%for product in elements.products %}
                     {%if product.category == category %}
-                    <br>
                     {{ product.name }}
+                <br/><br/>
                     {% endif %}
                 {% endfor %}
+                <br/>
             </div>
     {% endfor %}
-
 {% endblock %}

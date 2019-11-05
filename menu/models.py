@@ -2,7 +2,6 @@ from django.db import models
 from django.core.validators import MaxValueValidator, MinValueValidator
 
 
-
 class Category(models.Model):
     name = models.CharField(verbose_name=u"Nombre", max_length=30, blank=False, null=False)
 
@@ -12,12 +11,12 @@ class Category(models.Model):
 
 class Product(models.Model):
     name = models.CharField(verbose_name=u"Nombre", max_length=30, blank=False, null=False)
-    description = models.TextField(verbose_name=u'Descripcion', max_length=500, blank=False, null=False)
+    description = models.TextField(verbose_name=u'Descripción', max_length=500, blank=False, null=False)
     price = models.DecimalField(verbose_name=u'Precio', decimal_places=2, max_digits=6)
     suitForVegetarian = models.BooleanField(verbose_name=u'Apto para Vegetarianos', default=False)
     suitForGlutenIntolerant = models.BooleanField(verbose_name=u'Apto para Celíacos', default=False)
-    category = models.ForeignKey(Category, on_delete=models.CASCADE, null=True)
-    image = models.ImageField(upload_to="products", null=True, blank=True)
+    category = models.ForeignKey(Category, verbose_name="Categoría", on_delete=models.CASCADE, null=True)
+    image = models.ImageField(upload_to="products", verbose_name="Imagen", null=True, blank=True)
 
     def __str__(self):
         return self.name
@@ -30,12 +29,12 @@ class PaymentMethod(models.Model):
 
     TYPES = [
         (CASH, 'Efectivo'),
-        (CREDIT, 'Credito'),
-        (DEBIT, 'Debito'),
+        (CREDIT, 'Crédito'),
+        (DEBIT, 'Débito'),
     ]
 
-    description = models.CharField(max_length=200, blank=False, null=False)
-    payment_type = models.CharField(max_length=2, choices=TYPES, blank=False, null=False)
+    description = models.CharField(verbose_name="Descripción", max_length=200, blank=False, null=False)
+    payment_type = models.CharField(verbose_name="Tipo de pago", max_length=2, choices=TYPES, blank=False, null=False)
 
     def __str__(self):
         return self.description
@@ -44,8 +43,11 @@ class PaymentMethod(models.Model):
 class DailySpecialManager(models.Manager):
     def get_queryset(self):
         specials = super(DailySpecialManager, self).get_queryset()
+
         for special in specials:
-            special.product.discountPrice = "{0:.2f}".format(float(special.product.price) * (1 - special.discount/100))
+            special.product.discountPrice = "{0:.2f}".format(
+                float(special.product.price) * (1 - special.discount / 100))
+
         return specials
 
 
@@ -72,8 +74,12 @@ class DailySpecial(models.Model):
     def __str__(self):
         return "{}: {}".format(self.get_type_display(), self.product)
 
+
 class Promotion(models.Model):
-    description = models.CharField(max_length=400, blank=False, null=False)
+    description = models.CharField(verbose_name="Descripción", max_length=400, blank=False, null=False)
+
+    def __str__(self):
+        return self.description
 
 
 class Client(models.Model):
@@ -86,8 +92,8 @@ class Client(models.Model):
 
 
 class Suggestion(models.Model):
-    client = models.ForeignKey(Client, on_delete=models.CASCADE)
-    description = models.CharField(verbose_name="description", max_length=500, blank=False)
+    client = models.ForeignKey(Client, verbose_name="Cliente", on_delete=models.CASCADE)
+    description = models.CharField(verbose_name="Descripción", max_length=500, blank=False)
 
     def __str__(self):
-        return self.description
+        return "{}: {}".format(self.client.name, self.description)
