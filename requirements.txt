@@ -7,3 +7,6 @@ soupsieve==1.9.4
 sqlparse==0.3.0
 django-widget-tweaks
 pillow
+dj-database-url
+django-heroku
+
