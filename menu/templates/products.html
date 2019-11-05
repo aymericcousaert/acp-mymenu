@@ -17,7 +17,11 @@
             <div class="column-item-info">
                 {{ special.product.name }}
                 <br>
-                {{ special.product.discountPrice }}
+                {% if special.discount == 0.0 %}
+                    ${{ special.product.discountPrice }}
+                {% else %}
+                    <s><span class="text-danger">${{ special.product.price }}</span></s> ${{ special.product.discountPrice }}
+                {% endif %}
             </div>
 
         </div>
@@ -56,7 +60,7 @@
                 <div class="column-item-info">
                     {{ product.description }}
                     <br>
-                    {{ product.price }}
+                    ${{ product.price }}
 
                 </div>
                 <div class="column-item-info">
