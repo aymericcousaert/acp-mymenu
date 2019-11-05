@@ -66,7 +66,7 @@ class DailySpecial(models.Model):
 
     type = models.CharField(primary_key=True, verbose_name="Tipo", max_length=2, choices=TYPES, blank=False, null=False)
     product = models.ForeignKey(Product, verbose_name='Producto', related_name='product', on_delete=models.CASCADE)
-    discount = models.FloatField(verbose_name="Porcentaje de Descuento (%)", blank=False, null=False,
+    discount = models.FloatField(verbose_name="Descuento (%)", blank=False, null=False,
                                  validators=[MinValueValidator(0), MaxValueValidator(99)], default=0)
 
     objects = DailySpecialManager()
