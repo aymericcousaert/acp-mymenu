@@ -15,9 +15,7 @@ import os
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
-import dj_database_url
 
-DATABASES['default'] = dj_database_url.config(default='postgres://...')
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/2.2/howto/deployment/checklist/
@@ -155,5 +153,4 @@ EMAIL_HOST_USER = "mymenu.fiuba.acp@gmail.com"
 EMAIL_HOST_PASSWORD = "qdlpxybhfuqmuhqo"
 EMAIL_SUBJECT = "My Menu - Comentarios o sugerencias"
 
-import django_heroku
-django_heroku.settings(locals())
+
